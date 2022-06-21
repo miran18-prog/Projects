@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors, deprecated_member_use, prefer_const_literals_to_create_immutables
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:math_expressions/math_expressions.dart';
+import 'package:flutterdesktop/DataFolder/Data.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -10,177 +11,63 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Simple Calculator',
-      home: Calculator(),
-      theme: ThemeData(primarySwatch: Colors.blue),
+      home: StudentsHomeScreenView(),
     );
   }
 }
 
-class Calculator extends StatefulWidget {
-  const Calculator({Key? key}) : super(key: key);
+class StudentsHomeScreenView extends StatefulWidget {
+  const StudentsHomeScreenView({Key? key}) : super(key: key);
 
   @override
-  State<Calculator> createState() => _CalculatorState();
+  State<StudentsHomeScreenView> createState() => _StudentsHomeScreenViewState();
 }
 
-class _CalculatorState extends State<Calculator> {
-  String expression = "";
-  String Equation = "0";
-  String Result = "0";
-  ButtonPessed(String buttonText) {
-    setState(() {
-      if (buttonText == "C") {
-        Equation = "0";
-        Result = "0";
-      } else if (buttonText == "⌫") {
-        Equation = Equation.substring(0, Equation.length - 1);
-        if (Equation == "") Equation = "0";
-      } else if (buttonText == "=") {
-        expression = Equation;
-        try {
-          Parser p = Parser();
-          Expression exp = p.parse(expression);
-          ContextModel cm = ContextModel();
-          Result = '${exp.evaluate(EvaluationType.REAL, cm)}';
-        } catch (e) {}
-      } else {
-        if (Equation == "0")
-          Equation = buttonText;
-        else
-          Equation = Equation + buttonText;
-      }
-    });
-  }
-
+class _StudentsHomeScreenViewState extends State<StudentsHomeScreenView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text('Calculator'),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.centerRight,
-            padding: EdgeInsets.fromLTRB(10, 20, 20, 0),
-            child: Text(
-              Equation,
-              style: TextStyle(fontSize: 38),
-            ),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "students list",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          Container(
-            alignment: Alignment.centerRight,
-            padding: EdgeInsets.fromLTRB(10, 20, 20, 0),
-            child: Text(
-              Result,
-              style: TextStyle(fontSize: 30),
-            ),
-          ),
-          Expanded(
-            child: Divider(),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width * .75,
-                child: Table(
-                  // ignore: prefer_const_literals_to_create_immutables
-                  children: [
-                    TableRow(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        Button("C", 1, Colors.redAccent),
-                        Button("⌫", 1, Colors.redAccent),
-                        Button("/", 1, Colors.redAccent),
-                      ],
+          leading: IconButton(
+              onPressed: () {
+                listOfStudents.add(
+                  ListOf(first_name: "test4", last_name: "test4"),
+                );
+                setState(() {});
+              },
+              icon: Icon(Icons.plus_one)),
+          centerTitle: true,
+          backgroundColor: Colors.grey,
+          elevation: 0,
+        ),
+        body: Container(
+          color: Colors.teal,
+          child: ListView.builder(
+              itemCount: listOfStudents.length,
+              itemBuilder: (context, i) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25))),
+                    elevation: 0,
+                    borderOnForeground: false,
+                    child: ListTile(
+                      title: Text(listOfStudents[i].first_name),
+                      leading: Icon(Icons.person),
+                      trailing: IconButton(
+                          icon: Icon(Icons.arrow_forward_ios),
+                          onPressed: () {}),
+                      subtitle: Text(i.toString()),
                     ),
-                    TableRow(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        Button("7", 1, Colors.blueAccent),
-                        Button("8", 1, Colors.blueAccent),
-                        Button("9", 1, Colors.blueAccent),
-                      ],
-                    ),
-                    TableRow(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        Button("4", 1, Colors.blueAccent),
-                        Button("5", 1, Colors.blueAccent),
-                        Button("6", 1, Colors.blueAccent),
-                      ],
-                    ),
-                    TableRow(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        Button("1", 1, Colors.blueAccent),
-                        Button("2", 1, Colors.blueAccent),
-                        Button("3", 1, Colors.blueAccent),
-                      ],
-                    ),
-                    TableRow(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        Button(".", 1, Colors.blueAccent),
-                        Button("0", 1, Colors.blueAccent),
-                        Button("00", 1, Colors.blueAccent),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.25,
-                child: Table(
-                  children: [
-                    TableRow(
-                      children: [
-                        Button("*", 1, Colors.cyan),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        Button("-", 1, Colors.cyan),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        Button("+", 1, Colors.cyan),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        Button("=", 2, Colors.cyan),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget Button(String ButtonText, double Buttonheight, Color ButtonColor) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.1 * Buttonheight,
-      color: ButtonColor,
-      child: FlatButton(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
-            side: BorderSide(
-                color: Colors.white, width: 1, style: BorderStyle.solid)),
-        onPressed: () => ButtonPessed(ButtonText),
-        child: Text(
-          ButtonText,
-          style: TextStyle(
-              fontSize: 30, color: Colors.white, fontWeight: FontWeight.normal),
+                  ),
+                );
+              }),
         ),
       ),
     );
