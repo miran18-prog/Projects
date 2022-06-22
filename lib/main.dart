@@ -1,7 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'File1.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutterdesktop/Pages/File1.dart';
+import 'Pages/LoginPage.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(LoginPage());
 }
